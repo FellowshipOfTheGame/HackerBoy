@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hackerboy", "Assembly-CSharp-firstpass.csproj", "{889BC95D-B92E-75CD-EC07-5E37C55F1DD4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hackerboy", "Assembly-CSharp.csproj", "{1A5BFBB5-C945-E215-FE3F-99D7A43FBE08}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{889BC95D-B92E-75CD-EC07-5E37C55F1DD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{889BC95D-B92E-75CD-EC07-5E37C55F1DD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{889BC95D-B92E-75CD-EC07-5E37C55F1DD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{889BC95D-B92E-75CD-EC07-5E37C55F1DD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A5BFBB5-C945-E215-FE3F-99D7A43FBE08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A5BFBB5-C945-E215-FE3F-99D7A43FBE08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A5BFBB5-C945-E215-FE3F-99D7A43FBE08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A5BFBB5-C945-E215-FE3F-99D7A43FBE08}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
