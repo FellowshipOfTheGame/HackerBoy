@@ -3,13 +3,19 @@ using System.Collections;
 
 public class Player : MonoBehaviour {
 
-	private bool inSafeZone;
+	public bool inSafeZone;
+	public Interactable interactable;
+
+	public PlayerController pc;
+	[UnityEngine.SerializeField] 
 	private Inventory inventory;
-	private PlayerController pc;
-	private PartyMember[] party = new PartyMember[4];
+	[UnityEngine.SerializeField] 
+	private CharacterBase[] party = new CharacterBase[4]; // Also lineup
 
 	void Start(){
-
+		pc = new OverworldController(this);
+		interactable = null;
+		inSafeZone = false;
 	}
 
 	void Update(){
@@ -28,14 +34,17 @@ public class Player : MonoBehaviour {
 		if(Input.GetButton("Start"))
 			this.pc.Start();
 		
-		if(Input.GetAxis("Horizontal") > 0)
+		if(Input.GetAxis("Horizontal") != 0)
 			this.pc.Horizontal();
 		
-		if(Input.GetAxis("Vertical") > 0 )
+		if(Input.GetAxis("Vertical") != 0)
 			this.pc.Vertical();
+
+		if(Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+			this.pc.Idle();
 
 	}
 
+	public void SetInteractable(Interactable obj){ this.interactable = obj; }
 	public void SetController(PlayerController pc){ this.pc = pc; }
-
 }

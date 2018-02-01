@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 public class CameraController : MonoBehaviour {
 
@@ -8,13 +9,11 @@ public class CameraController : MonoBehaviour {
     private GameObject player = null;
 
     void Awake() {
-        PlayerController pc = FindObjectOfType(typeof(PlayerController))
-                                                        as PlayerController;
+        this.player = GameObject.FindGameObjectWithTag("Player");
 
-        if (pc) {
-            player = pc.gameObject;
-        } else {
-            Debug.Log("Não tem jogador nessa porra.");
+        if(!player){
+            Debug.Log("Player not found");
+            throw new Exception("Player not found");
         }
 
         // TAG: MainCamera

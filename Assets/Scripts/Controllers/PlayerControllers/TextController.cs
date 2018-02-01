@@ -1,6 +1,3 @@
-using UnityEngine;
-using System.Collections;
-
 public class TextController : PlayerController {
 
 	public TextController(){
@@ -12,6 +9,10 @@ public class TextController : PlayerController {
 	}
 	
 	public override void Vertical(){
+
+	}
+
+	public override void Idle(){
 
 	}
 	

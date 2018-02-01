@@ -1,0 +1,33 @@
+Integrantes:
+	- Lucas Alexandre Soares
+	- Giovanna Oliveira Guimarães
+	- Rafael Augusto Monteiro
+	- Laura Felippe Torggler
+	- William Quelho Ferreira
+
+Data de início do projeto: 28/11/2017
+
+Ferramentas utilizadas:
+	- Unity3D
+	- Krita
+	- Gimp
+	- C#
+	- LMMS
+
+História: em desenvolvimento
+
+Mecânicas principais:
+	
+	Jogo RPG 2D com visão top-down inspirado em RPG's clássicos (Chrono Trigger, Final Fantasy). Quando o jogador se movimentar pelo mundo, há uma chance de acontecer um encontro aleatório e iniciar uma batalha. Durante a batalha, o jogador controlará seu time utilizando habilidades para derrotar o time inimigo. Essas habilidades possuem atributos que permitem combos entre elas, permitindo que o jogador use poderes mais fortes. 
+	Durante o jogo, o jogador pode pausar o jogo para mexer nos seus itens e equipamentos, podendo utilizar itens dentro e fora de batalhas, ou mudar os equipamentos dos personagens (fora de batalha). Em alguns lugares do mundo, haverão lojas de itens e equipamentos para o jogador comprar a fim de ficar mais forte ou ter alguma vantagem em batalha.
+	O time do jogador será composto de 4 personagens que andarão em fila. Esses personagens se juntam ao time conforme eventos de história acontecem.
+
+O que está feito:
+	O projeto está na fase de prototipação, logo poucas coisas estão implementadas e a maioria estão incompletas.
+	
+	O sistema de diálogo do jogo já está completamente implementado, permitindo avanço automático de texto, exibição rápida dos caractéres, animação dos caractéres a serem exibidos, caixa de diálogo, eventos de diálogo, voice acting e efeitos sonoros, imagens de retrato e nome dos personagens envolvidos na conversa.
+	A movimentação do personagem no mundo já está implementada porém ainda precisa ser polida. O jogador é capaz de se mover num plano 2D, porém é necessário melhorar a predição de movimento em colisões, suavizar a movimentação para ficar mais fluida e melhorar as hitbox para detecção de colisão.
+	O sistema de batalha está em estado de protótipo, os encontros aleatórios ainda não acontecem, então a batalha só ocorre quando explicitamente chamada no código. A batalha já possui o time do jogador e dos inimigos e o jogador consegue utilizar ataques básicos, porém não há habilidades implementadas ainda e os inimigos não possuem nenhum tipo de comportamento. Ainda não é possível utilizar itens durante a batalha. 
+	A câmera já possui lógica para seguir o jogador pelo mapa, porém seu movimento não é confortável à visão do jogador. A câmera precisa ser melhorada até ficar confortável de jogar.
+	O jogador já possui uma estrutura (em código apenas) que permite adicionar, organizar, recuperar itens, equipamentos e habilidades, porém ainda não dá nada gráfico para tal. Além disso, nenhum dos objetos descritos têm lógica de uso, tanto em batalha como no mundo.
+
