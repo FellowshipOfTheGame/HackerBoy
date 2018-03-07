@@ -6,91 +6,107 @@ using UnityEngine.SceneManagement;
 public class ScreenFader : MonoBehaviour {
 
     [UnityEngine.SerializeField]
-    public Image FadeImg;
-    public float fadeSpeed = 1.5f;
+    public Image fadeImg;
+    public Image fadeImgPrefab;
+
+    public float speed = 1.5f;
 
     public float minAlpha = 0.05f;
     public float maxAlpha = 0.90f;
 
-    public float FADEIN_TIMER = -5f;
-    public float START_TIMER = 15f;
-    public float timer = 5.0f;
-    public bool isFading = false;
+    private bool _isFading = false;
+    public bool isFading { get; private set; }
 
     void Awake() {
-        FadeImg.rectTransform.localScale = new Vector2(
+
+        // If no black image exists, create a new one
+        if(GameObject.Find("Black") == null){
+            fadeImg = Instantiate(fadeImgPrefab);
+            fadeImg.transform.SetParent(
+                GameObject.Find("Canvas").transform, false);
+        }
+
+        fadeImg.rectTransform.localScale = new Vector2(
             Screen.width,
             Screen.height
         );
+        fadeImg.enabled = false;
     }
 
     void Update() {
 
-        /*timer -= Time.deltaTime;
-        if ((timer <= 0) && !isFading){
-
-            FadeImg.gameObject.SetActive(true);
-            isFading = true;
-
-            // start fade
-            StartCoroutine("FadeRoutine");
-        }
-
-        if ((timer <= -1.3f) && isFading){
-
-            // start fade
-            StartFadeOut();
-        }*/
     }
 
     private void FadeOut() {
-        FadeImg.color = Color.Lerp(
-            FadeImg.color,
+        fadeImg.color = Color.Lerp(
+            fadeImg.color,
             Color.clear,
-            fadeSpeed*Time.deltaTime
+            speed*Time.deltaTime
         );
     }
-
 
     private void FadeIn() {
-        FadeImg.color = Color.Lerp(
-            FadeImg.color,
+        fadeImg.color = Color.Lerp(
+            fadeImg.color,
             Color.black,
-            fadeSpeed*Time.deltaTime
+            speed*Time.deltaTime
         );
     }
 
-    // FIXME: refactor this to coroutine
-    public void StartFadeOut() {
-        
-        // Fade the texture to clear
-        FadeOut();
-        
-        if (FadeImg.color.a <= minAlpha) {
-            FadeImg.color = Color.clear;
-            FadeImg.enabled = false;
-
-            isFading = false;
-            timer = START_TIMER - Random.Range(0f, 3f);
-        }
+    public void StartFadeIn(){
+        fadeImg.color = Color.clear; // Make sure a black screen doesnt pop out
+        StartCoroutine("FadeInRoutine");
     }
 
+    public void StartFadeOut(){
+        StartCoroutine("FadeOutRoutine");
+    }
 
-    private IEnumerator FadeRoutine() {
+    private IEnumerator FadeInRoutine() {
+        Debug.Log("[DEBUG]: Starting fade in");
         
         // Make sure the image is enabled
-        FadeImg.enabled = true;
+        fadeImg.enabled = true;
+        _isFading = true;
 
         do {
             // Start fading in
             FadeIn();
 
             // Let some alpha 
-            if (FadeImg.color.a >= maxAlpha) {
+            if (fadeImg.color.a >= maxAlpha) {
+
+                Debug.Log("[DEBUG]: Fadein ended");
+                fadeImg.color = Color.black;
+                _isFading = false;
                 yield break;
 
             } else yield return null;
 
+        } while (true);
+    }
+
+    private IEnumerator FadeOutRoutine() {
+        Debug.Log("[DEBUG]: Starting fade out");
+        
+        // Make sure the image is enabled
+        fadeImg.enabled = true;
+        _isFading = true;
+        
+        do {
+            // Start fading in
+            FadeOut();
+
+            // Let some alpha 
+            if (fadeImg.color.a <= minAlpha) {
+
+                Debug.Log("[DEBUG]: Fadeout ended");
+                _isFading = false;
+                fadeImg.color = Color.clear;
+                fadeImg.enabled = false;
+                yield break;
+
+            } else yield return null;
         } while (true);
     }
 }

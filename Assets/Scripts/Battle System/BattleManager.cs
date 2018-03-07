@@ -7,6 +7,7 @@ public /*static*/ class BattleManager : MonoBehaviour {
 	/*DEBUG*/
 	public bool testBattle;
 	public Player p;
+	public UnityEngine.UI.Text battlePhase;
 	/*ENDDEBUG*/
 
 	public enum BattleState {
@@ -42,22 +43,28 @@ public /*static*/ class BattleManager : MonoBehaviour {
 		// Battle State Machine
 		switch(currentState){
 		case BattleState.START:
+			this.battlePhase.text = "START";
 			StartBattle(p, player, null);
 			break;
 
 		case BattleState.PLAYER_CHOICE:
+			this.battlePhase.text = "PLAYER_CHOICE";
 			break;
 
 		case BattleState.ENEMY_CHOICE:
+			this.battlePhase.text = "ENEMY_CHOICE";
 			break;
 
 		case BattleState.WIN:
+			this.battlePhase.text = "WIN";
 			break;
 
 		case BattleState.LOSE:
+			this.battlePhase.text = "LOSE";
 			break;
 
 		case BattleState.NULL:
+			this.battlePhase.text = "NULL";
 			break;
 
 		default:

@@ -6,6 +6,10 @@ using System.Collections.Generic;
 
 public class BattleBoxManager : MonoBehaviour {
 
+	/*DEBUG*/
+	public Text cursorPosText;
+	/*ENDDEBUG*/
+
 	public static readonly float UP = 1.0f;
 	public static readonly float RIGHT = 1.0f;
 	public static readonly float LEFT = -1.0f;
@@ -14,13 +18,15 @@ public class BattleBoxManager : MonoBehaviour {
 	private readonly int X_STEP = 250;
 	private readonly int Y_STEP = 40;
 
+	private GameObject options;
+	private List<Text> opCascade;
+
 	private Image portrait;
 	private RectTransform cursorTransform; // First row/col X = -200 Y = 40
 	private int cursorPos; 	// Ascending in row order
 							// 0 3 6
 							// 1 4 7
 							// 2 5 8
-	private List<Text> options;
 
 	/*
 	TODO: make this dynamic
@@ -31,10 +37,19 @@ public class BattleBoxManager : MonoBehaviour {
 	*/
 
 	void Start(){
+
+		/*DEBUG*/
+		// opCascade = GameObject.Instantiate();
+		/*ENDDEBUG*/
+
 		GameObject tmp = GameObject.Find("/Canvas/BattleTextBox/Cursor");
 		if(!tmp) throw new Exception("Cursor object not found.");
 		// this.cursor = tmp.GetComponent<Image>();
 		this.cursorTransform = tmp.GetComponent<RectTransform>();
+	}
+
+	void Update(){
+		this.cursorPosText.text = "Cursor: " + cursorPos;
 	}
 
 	// If direction > 0 move right, else move left
@@ -43,7 +58,7 @@ public class BattleBoxManager : MonoBehaviour {
 		Debug.Log("Moving cursor on horizontal axis. Direction: " + direction);
 		
 		// Move right
-		if(direction > 0){
+		if(direction > 0 /*&& cursorPos + 3 <= opCascade.size*/){
 			cursorPos += 3;
 			float tmp = cursorTransform.localPosition.x + X_STEP;
 			float y = cursorTransform.localPosition.y;
@@ -65,14 +80,14 @@ public class BattleBoxManager : MonoBehaviour {
 
 		// Move up
 		if(direction > 0){
-			cursorPos++;
+			cursorPos--;
 			float tmp = cursorTransform.localPosition.y + Y_STEP;
 			float x = cursorTransform.localPosition.x;
 			cursorTransform.localPosition = new Vector2(x, tmp);
 
 		// Move down
 		} else if(direction < 0){
-			cursorPos--;
+			cursorPos++;
 			float tmp = cursorTransform.localPosition.y - Y_STEP;
 			float x = cursorTransform.localPosition.x;
 			cursorTransform.localPosition = new Vector2(x, tmp);

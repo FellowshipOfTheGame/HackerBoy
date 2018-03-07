@@ -1,30 +1,31 @@
+using UnityEngine;
+
 public class TextController : PlayerController {
 
+	private DialogManager dm;
+
 	public TextController(){
-		
+		this.dm = GameObject.Find("DialogManager").GetComponent<DialogManager>();
 	}
 
-	public override void Horizontal(){
-
-	}
+	// Axes
+	public override void Horizontal(){}
+	public override void Vertical(){}
+	public override void Idle(){}
 	
-	public override void Vertical(){
-
-	}
-
-	public override void Idle(){
-
-	}
-	
+	// Buttons
 	public override void Action(){
-
+		if(dm.sentenceFinished) dm.NextSentence();
+		else dm.EndSentence();
 	}
+	public override void ActionRelease(){}
 	
-	public override void Cancel(){
+	public override void AltAction(){ dm.ToggleAutoAdvance(); }
+	public override void AltActionRelease(){}
 
-	}
-	
-	public override void Start(){
+	public override void Cancel(){ dm.fastText = true; }
+	public override void CancelRelease(){ dm.fastText = false; }
 
-	}
+	public override void Start(){ dm.Skip(); }
+	public override void StartRelease(){}
 }

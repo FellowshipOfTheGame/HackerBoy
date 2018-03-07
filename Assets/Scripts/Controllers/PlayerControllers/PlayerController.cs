@@ -4,6 +4,11 @@
 	public abstract void Vertical();
 	public abstract void Idle();
 	public abstract void Action();
+	public abstract void ActionRelease();
+	public abstract void AltAction();
+	public abstract void AltActionRelease();
 	public abstract void Cancel();
+	public abstract void CancelRelease();
 	public abstract void Start();
+	public abstract void StartRelease();
 }

@@ -14,7 +14,9 @@ public class BattleController : PlayerController {
 		Debug.Log("New battle controller created");
 	}
 
+	// Axes
 	public override void Horizontal(){
+		// Do nothing if its not player's phase
 		if(bm.currentState != BattleManager.BattleState.PLAYER_CHOICE ||
 			hAxisPressed) return;
 
@@ -27,11 +29,11 @@ public class BattleController : PlayerController {
 			Debug.Log("Input: \"Horizontal axis: \"" + Input.GetAxis("Horizontal"));
 			bm.battleBox.MoveCursorHorizontal(BattleBoxManager.LEFT);
 			hAxisPressed = true;
-
 		}
 	}
 
 	public override void Vertical(){
+		// Do nothing if its not player's phase
 		if(bm.currentState != BattleManager.BattleState.PLAYER_CHOICE ||
 			vAxisPressed) return;
 
@@ -53,26 +55,33 @@ public class BattleController : PlayerController {
 		hAxisPressed = false;
 	}
 
+	// Buttons
 	public override void Action(){
+		// Do nothing if its not player's phase
 		if(bm.currentState != BattleManager.BattleState.PLAYER_CHOICE)
 			return;
-
 		Debug.Log("Input: \"Action\"");
-
 	}
+	public override void ActionRelease(){}
+	
+	public override void AltAction(){}
+	public override void AltActionRelease(){}
 
 	public override void Cancel(){
+		// Do nothing if its not player's phase
 		if(bm.currentState != BattleManager.BattleState.PLAYER_CHOICE)
 			return;
 
 		Debug.Log("Input: \"Cancel\"");
 	}
 
+	public override void CancelRelease(){}
+
 	public override void Start(){
+		// Do nothing if its not player's phase
 		if(bm.currentState != BattleManager.BattleState.PLAYER_CHOICE)
 			return;
-
 		Debug.Log("Input: \"Start\"");
-
 	}
+	public override void StartRelease(){}
 }

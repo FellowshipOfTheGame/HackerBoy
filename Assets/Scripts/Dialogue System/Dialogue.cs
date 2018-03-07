@@ -22,7 +22,14 @@ public class Sentence {
 	
 	[TextArea(3, 5)]
 	public string text;
-	public float delay;
+	
+	private float _delay; 
+	private float TIME_PER_CHAR = 0.5f; // In seconds
+	public float delay { // Delay for auto advance 
+		get { return this._delay; }
+		set { this._delay = text.Length*TIME_PER_CHAR; }
+	}
+	
 	public AudioClip voice;
 
 	// Dialogue event
