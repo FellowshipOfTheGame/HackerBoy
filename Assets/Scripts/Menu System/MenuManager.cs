@@ -5,13 +5,14 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class MenuManager : MonoBehaviour {
+	
+	public static Transform canvas;
 
-	public Sprite black;
+	public GameObject black;
 	public Menu activeMenu { get; private set; }
 	public GameObject cursorPrefab;
-	public static Transform canvas;
 	
-	private Stack<Image> fade;
+	private Stack<GameObject> fade;
 	private Stack<Menu> menuStack;
 
 	void Start(){
@@ -20,7 +21,9 @@ public class MenuManager : MonoBehaviour {
 		canvas = GameObject.Find("Canvas").transform;
 
 		// Black image to create a fade effect for objects behind menu
-		fade = new Stack<Image>();
+		fade = new Stack<GameObject>();
+		black.GetComponent<Image>().rectTransform.localScale = 
+			new Vector2(Screen.width,Screen.height);
 
 		// Menu stack to hold reference to multiple menus (only top is active)
 		menuStack = new Stack<Menu>();
@@ -31,21 +34,22 @@ public class MenuManager : MonoBehaviour {
 
 	public void OpenMenu(Menu menu){
 
-		Image img = new Image(black).color.a = 0.1f;
+		GameObject img = GameObject.Instantiate(black, canvas);
+		img.SetActive(true);
 		menuStack.Push(menu);
-		fade.Push(img)
+		fade.Push(img);
 	}
 
 	// Closes current active menu
 	public void CloseMenu(){
-
+		menuStack.Pop().CloseMenu();
 	}
 
 	// Clears menu stack
 	public void CloseAllMenus(){
-		// foreach(Menu menu in menuStack){
-		// 	menu.close();
-		// }
+		Menu menu;
+		while((menu = menuStack.Pop()) != null)
+			menu.CloseMenu();
 	}
 
 	public GameObject CreateCursor(){

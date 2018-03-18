@@ -36,4 +36,9 @@ public abstract class Menu {
 		this.width = width;
 		this.name = name;
 	}
+
+	public abstract void CloseMenu();
+	public abstract void MoveCursorHorizontal(float direction);
+	public abstract void MoveCursorVertical(float direction);
 }
+

@@ -52,8 +52,6 @@ public class Player : MonoBehaviour {
 	private void StartDebugMenu(){
 		pc = new MenuController(GameObject.Find("MenuManager")
 									.GetComponent<MenuManager>());
-
-		mm.DebugMenu();
 	}
 
 	void Update(){

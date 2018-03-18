@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 public class OptionsMenu : Menu {
 
-	private GameObject menu;
 	private int rows, cols;
 	private List<GameObject> options;
+	
 	protected RectTransform cursorTransform; // First row/col X = -200 Y = 40
 	protected int cursorPos; 	// Ascending in row order
 								// 0 3 6
@@ -32,8 +32,17 @@ public class OptionsMenu : Menu {
 			options[i].transform.SetParent(GameObject.Find("Canvas").transform);
 	}
 
+	public override void CloseMenu(){
+		// Destroy cursor
+		UnityEngine.Object.Destroy(cursor);
+		// Destroy options
+		foreach (GameObject go in options)
+			UnityEngine.Object.Destroy(go);
+		options = null; // Destroy list
+	}
+
 	// If direction > 0 move right, else move left
-	public void MoveCursorHorizontal(float direction){
+	public override void MoveCursorHorizontal(float direction){
 		direction /= Math.Abs(direction); // Get normalized value 1 or -1
 		Debug.Log("Moving cursor on horizontal axis. Direction: " + direction);
 		
@@ -54,7 +63,7 @@ public class OptionsMenu : Menu {
 	}
 
 	// If direction > 0 move up, else move down
-	public void MoveCursorVertical(float direction){
+	public override void MoveCursorVertical(float direction){
 		direction /= Math.Abs(direction); // Get normalized value 1 or -1
 		Debug.Log("Moving cursor on vertical axis. Direction: " + direction);
 

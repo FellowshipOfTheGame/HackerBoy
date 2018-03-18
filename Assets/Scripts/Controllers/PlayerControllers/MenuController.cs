@@ -49,13 +49,17 @@ public class MenuController : PlayerController {
 	}
 
 	// Buttons
-	public override void Action(){}
+	public override void Action(){
+		mm.DebugMenu();
+	}
 	public override void ActionRelease(){}
 	
 	public override void AltAction(){}
 	public override void AltActionRelease(){}
 
-	public override void Cancel(){}
+	public override void Cancel(){
+		mm.CloseMenu();
+	}
 	public override void CancelRelease(){}
 
 	public override void Start(){}

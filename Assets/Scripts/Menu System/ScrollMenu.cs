@@ -13,11 +13,11 @@ public class ScrollMenu : Menu {
 
 	public ScrollMenu(
 		bool vertical,
-		float width, 
-		float height, 
+		float width,
+		float height,
 		GameObject cursor, 
 		GameObject[] entries,
-		string name) 
+		string name)
 	: base(cursor, height, width, name){
 		
 		this.vertical = vertical;
@@ -25,4 +25,17 @@ public class ScrollMenu : Menu {
 		this.box.horizontal = !vertical;
 
 	}
+
+	public override void CloseMenu(){
+
+	}
+	
+	public override void MoveCursorHorizontal(float direction){
+
+	}
+	
+	public override void MoveCursorVertical(float direction){
+
+	}
+	
 }
