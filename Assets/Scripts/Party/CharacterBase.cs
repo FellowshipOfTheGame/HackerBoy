@@ -16,12 +16,12 @@ public struct Stats {
 }
 
 public struct CharacterEquipment {
-	public EquipmentScriptable head;
-	public EquipmentScriptable body;
-	public EquipmentScriptable weapon;
-	public EquipmentScriptable legs;
-	public EquipmentScriptable accessory1;
-	public EquipmentScriptable accessory2;
+	public Equipment head;
+	public Equipment body;
+	public Equipment weapon;
+	public Equipment legs;
+	public Equipment accessory1;
+	public Equipment accessory2;
 }
 
 public class CharacterBase : MonoBehaviour {

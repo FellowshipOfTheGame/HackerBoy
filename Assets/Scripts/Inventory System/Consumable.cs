@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 
 [CreateAssetMenu(fileName="Consumable", menuName="Scriptable/Consumable", order=1)]
-public class ConsumableScriptable : ItemScriptable {
+public class Consumable : Item {
 
     // FIXME How to model item effectiveness?
     public int effectValue;

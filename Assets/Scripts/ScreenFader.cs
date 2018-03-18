@@ -33,10 +33,6 @@ public class ScreenFader : MonoBehaviour {
         fadeImg.enabled = false;
     }
 
-    void Update() {
-
-    }
-
     private void FadeOut() {
         fadeImg.color = Color.Lerp(
             fadeImg.color,
@@ -91,10 +87,8 @@ public class ScreenFader : MonoBehaviour {
         
         // Make sure the image is enabled
         fadeImg.enabled = true;
-        _isFading = true;
-        
         do {
-            // Start fading in
+
             FadeOut();
 
             // Let some alpha 

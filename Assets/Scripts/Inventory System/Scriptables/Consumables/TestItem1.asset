@@ -8,10 +8,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26b9ac4a07629431e8f89b8fa8af24b1, type: 3}
+  m_Script: {fileID: 11500000, guid: 83845765ded2042a699378640d3a2096, type: 3}
   m_Name: TestItem1
   m_EditorClassIdentifier: 
-  itemName: 
-  sprite: {fileID: 0}
+  name: DebugItem1
+  description: Do debug stuff
+  sprite: {fileID: 21300000, guid: 454b45ad45ac74af5b4b14222cd12ff1, type: 3}
   type: 0
-  effectValue: 0
+  effectValue: 999
+  quantity: 1

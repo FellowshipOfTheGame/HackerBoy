@@ -11,10 +11,13 @@ public class OverworldController : PlayerController {
 	
 	private Player player;
 	private Rigidbody2D rb;
+	private GameObject pauseMenu;
 
 	public OverworldController(Player p){
 		this.player = p;
 		this.rb = p.GetComponent<Rigidbody2D>();
+		this.pauseMenu = GameObject.Find("PauseMenu");
+		this.pauseMenu.SetActive(false);
 	}
 
 	public override void Horizontal(){
@@ -52,7 +55,15 @@ public class OverworldController : PlayerController {
 	public override void Cancel(){ this.speed = runSpeed; }
 	public override void CancelRelease(){ this.speed = walkSpeed; }
 	
-	public override void Start(){}
+	public override void Start(){
+		if(pauseMenu){
+			pauseMenu.SetActive(true);
+			// Should change this to menu controller? Ideally it should be able
+			// to handle both battle menus and pause menu
+			
+		}
+	}
+
 	public override void StartRelease(){}
 }
 

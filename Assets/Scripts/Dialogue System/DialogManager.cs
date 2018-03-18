@@ -10,7 +10,7 @@ public class DialogManager : MonoBehaviour {
 	public AudioSource source;
 	public GameObject textBox; // Text box sprite
 	public GameObject autoAdvanceText;
-	// TODO: add portrait
+	public Image portrait;
 
 	public bool sentenceFinished { 
 		get; private set; 
@@ -22,10 +22,13 @@ public class DialogManager : MonoBehaviour {
 	private Sentence currentSentence;
 	private Dialogue currentDiag;
 
+	void Awake(){
+		DontDestroyOnLoad(this.gameObject);
+	}
+
 	void Start () {
 
 		sentences = new Queue<Sentence>();
-
 		Text[] aux = textBox.GetComponentsInChildren<Text>();
 
 		dialogueText = aux[0];
@@ -37,8 +40,13 @@ public class DialogManager : MonoBehaviour {
 	public void ToggleAutoAdvance(){
 		autoAdvance = !autoAdvance;
 		autoAdvanceText.SetActive(autoAdvance);
-		if(sentenceFinished && autoAdvance) 
-			StartCoroutine(AutoAdvance());
+		
+		// FIXME: need to see how to stop a single coroutine
+		// Workaround
+		if(sentenceFinished){
+			if(autoAdvance) StartCoroutine(AutoAdvance());
+			else StopAllCoroutines(); // StopCoroutine(AutoAdvance());
+		}
 	}
 
 	public void Reset(){
@@ -47,15 +55,13 @@ public class DialogManager : MonoBehaviour {
 		nameText.text = "";
 		textBox.SetActive(false);
 	}
-	public void StartDialog(Dialogue d, string name){
+	public void StartDialog(Dialogue d, string name, Sprite portrait){
 		
 		// Clear current dialog state
 		sentences.Clear();
-		
 		currentDiag = d; // Assign new dialog
-
+		this.portrait.sprite = portrait;
 		textBox.SetActive(true); // Activate textbox
-
 		nameText.text = name;
 
 		foreach(Sentence sentence in d.sentences)
@@ -64,6 +70,7 @@ public class DialogManager : MonoBehaviour {
 		NextSentence();
 	}
 
+	// TODO need a callback for when dialogue events finish
 	public void NextSentence(){
 
 		if(diagEventIsRunning) return; // Do nothing while a dialogue event is happening
@@ -100,15 +107,14 @@ public class DialogManager : MonoBehaviour {
 	}
 
 	// This function skips only until next dialogue event
-	public void Skip(){
-		// while()
-	}
+	public void Skip(){}
 
 	public void EndSentence(){
 		StopAllCoroutines(); // This only stop coroutines on THIS behaviour
 		PrintSentence(currentSentence.text);
 	}
 
+	// TODO need a callback for when dialogue events finish
 	private void CallDialogueEvent(DEvent devent){
 		diagEventIsRunning = true;
 		devent();
@@ -118,6 +124,7 @@ public class DialogManager : MonoBehaviour {
 	private void PrintSentence(string sentence){
 		dialogueText.text = sentence;
 		sentenceFinished = true;
+		if(autoAdvance) StartCoroutine(AutoAdvance());
 	}
 
 	private IEnumerator PrintChar(string sentence){
@@ -141,6 +148,6 @@ public class DialogManager : MonoBehaviour {
 
 	private IEnumerator AutoAdvance(){
 		yield return new WaitForSeconds(currentSentence.delay);
-		NextSentence();
+		NextSentence(); // TODO need a callback for when dialogue events finish
 	}
 }

@@ -24,10 +24,11 @@ public class Sentence {
 	public string text;
 	
 	private float _delay; 
-	private float TIME_PER_CHAR = 0.5f; // In seconds
+	private float TIME_PER_CHAR = 0.05f; // In seconds
+	private float TIME_PER_WORD = 0.3f; // In seconds
 	public float delay { // Delay for auto advance 
-		get { return this._delay; }
-		set { this._delay = text.Length*TIME_PER_CHAR; }
+		get { return text.Length*TIME_PER_CHAR; } // By character
+		// get { return text.Split(' ').Length*TIME_PER_WORD; } // By word
 	}
 	
 	public AudioClip voice;

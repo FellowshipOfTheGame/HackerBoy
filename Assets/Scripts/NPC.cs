@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class NPC : Interactable {
 
 	// FIXME: How to represent side-quests or events?
-	public readonly string NPCName;
+	public string NPCName;
+	public Sprite portrait;
 
 	private PlayerController pcHolder;
 	private Player p;
@@ -12,7 +14,6 @@ public class NPC : Interactable {
 	private DialogManager dm;
 	private int localEventFlags;	// Flags to represent this npc's events, i.e
 									// first time talking, or side quest done.
-
 
 	void Start(){
 		this.dm = GameObject.Find("DialogManager").GetComponent<DialogManager>();
@@ -46,7 +47,7 @@ public class NPC : Interactable {
 		dialogue.sentences[4].diagEvent = null;
 		dialogue.sentences[5].diagEvent = null;
 
-		dm.StartDialog(this.dialogue, "DeJurg");
+		dm.StartDialog(this.dialogue, "DeJurg", this.portrait);
 	}
 	
 	public override void OnInteract(GameObject playerObj){

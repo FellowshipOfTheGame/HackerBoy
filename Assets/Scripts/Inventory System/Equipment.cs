@@ -8,7 +8,7 @@ public class EquipStats {
 public enum EquipType { Weapon, Armor, Head, Boot } // Change these?
 
 [CreateAssetMenu(fileName="Equipment", menuName="Scriptable/Equipment", order=1)]
-public class EquipmentScriptable : ItemScriptable {
+public class Equipment : Item {
 
     public EquipType equipType;
     public EquipStats stats;

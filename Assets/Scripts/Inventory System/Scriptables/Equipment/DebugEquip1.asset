@@ -8,7 +8,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcb9a73e0555d44ef83e6214ade39fb8, type: 3}
-  m_Name: TestEquip1
+  m_Script: {fileID: 11500000, guid: f633274985bcb46019c1c2ec8d735533, type: 3}
+  m_Name: DebugEquip1
   m_EditorClassIdentifier: 
+  name: DebugEquip1
+  description: Ultimate debug power!
+  sprite: {fileID: 0}
+  type: 1
   equipType: 0

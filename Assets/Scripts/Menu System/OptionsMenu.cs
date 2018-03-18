@@ -4,57 +4,32 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+public class OptionsMenu : Menu {
 
-// REFACTOR
+	private GameObject menu;
+	private int rows, cols;
+	private List<GameObject> options;
+	protected RectTransform cursorTransform; // First row/col X = -200 Y = 40
+	protected int cursorPos; 	// Ascending in row order
+								// 0 3 6
+								// 1 4 7
+								// 2 5 8
 
-public class BattleBoxManager : MonoBehaviour {
-
-	/*DEBUG*/
-	public Text cursorPosText;
-	/*ENDDEBUG*/
-
-	public static readonly float UP = 1.0f;
-	public static readonly float RIGHT = 1.0f;
-	public static readonly float LEFT = -1.0f;
-	public static readonly float DOWN = -1.0f;
-
-	private readonly int X_STEP = 250;
-	private readonly int Y_STEP = 40;
-
-	private GameObject options;
-	private List<Text> opCascade;
-
-	private Image portrait;
-	private RectTransform cursorTransform; // First row/col X = -200 Y = 40
-	private int cursorPos; 	// Ascending in row order
-							// 0 3 6
-							// 1 4 7
-							// 2 5 8
-
-	/*
-	TODO: make this dynamic
-	Row and col increments
-	X = 0	Y = 0
-	X = 250	Y = -40
-	X = 500	Y = -80
-	*/
-
-	void Start(){
-
-		/*DEBUG*/
-		// opCascade = GameObject.Instantiate();
-		/*ENDDEBUG*/
+	public OptionsMenu(
+		int rows,
+		int cols,
+		GameObject cursor, 
+		GameObject[] options,
+		string name,
+		float width = 540, 
+		float height = 135)
+	: base(cursor, height, width, name){
 		
-		// TODO find this cursor
-		// GameObject tmp = GameObject.Find("/Canvas/BattleTextBox/Cursor");
-		// if(!tmp) throw new Exception("Cursor object not found.");
-		// this.cursor = tmp.GetComponent<Image>();
-		// this.cursorTransform = tmp.GetComponent<RectTransform>();
-	}
-
-	void Update(){
-		if(this.cursorPosText) 
-			this.cursorPosText.text = "Cursor: " + cursorPos;
+		this.cols = cols;
+		this.rows = rows;
+		this.options = new List<GameObject>(options);
+		for(int i = 0; i < options.Length; i++)
+			options[i].transform.SetParent(GameObject.Find("Canvas").transform);
 	}
 
 	// If direction > 0 move right, else move left

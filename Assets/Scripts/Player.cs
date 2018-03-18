@@ -7,8 +7,8 @@ public class Player : MonoBehaviour {
 	public enum Direction { N, S, E, W }
 
 	// TODO: make this generic (based on sprite size)
-	public readonly float INTERACTABLE_COLLIDER_OFFSET_X = 0.75f;
-	public readonly float INTERACTABLE_COLLIDER_OFFSET_Y = 1f;
+	public readonly float INTERACT_COLLIDER_OFFSET_X = 0.75f;
+	public readonly float INTERACT_COLLIDER_OFFSET_Y = 1f;
 
 	private Direction _spriteDir;
 	public Direction spriteDir {
@@ -22,67 +22,85 @@ public class Player : MonoBehaviour {
 	public bool inSafeZone;
 	public PlayerController pc;
 	public Interactable interactable;
+	public Inventory inventory;
 
-	[UnityEngine.SerializeField]
-	private Inventory inventory;
 	[UnityEngine.SerializeField] 
 	private CharacterBase[] party = new CharacterBase[4]; // Also lineup
 	[UnityEngine.SerializeField] 
 	private BoxCollider2D interactCollider;
+	private BattleManager bm;
+	private GameManager gm;
+	private MenuManager mm;
 
 	void Start(){
 		this.pc = new OverworldController(this);
+		this.inventory = gameObject.AddComponent<Inventory>();
 		this.interactable = null;
 		this.inSafeZone = false;
 
+		this.bm = GameObject.Find("BattleManager").GetComponent<BattleManager>();
+		this.gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+		this.mm = GameObject.Find("MenuManager").GetComponent<MenuManager>();
+
 		/* DEBUG NOTE: For debugging, use hard code values X = +-0.75 Y = +-1*/
 		this.interactCollider.offset = new Vector2(0, -1);
+		DontDestroyOnLoad(this.gameObject);
+
+		StartDebugMenu();
+	}
+
+	private void StartDebugMenu(){
+		pc = new MenuController(GameObject.Find("MenuManager")
+									.GetComponent<MenuManager>());
+
+		mm.DebugMenu();
 	}
 
 	void Update(){
-		ProcessInput();
+		if(/*DEBUG*/gm == null ||/*ENDDEBUG*/ !gm.gamePaused)
+			ProcessInput();
 	}
 
 	private void ProcessInput(){
 
 		// Button down press
-		if(Input.GetButtonDown("Action")) this.pc.Action();
-		if(Input.GetButtonDown("AltAction")) this.pc.AltAction();
-		if(Input.GetButtonDown("Cancel")) this.pc.Cancel();
-		if(Input.GetButtonDown("Start")) this.pc.Start();
+		if(Input.GetButtonDown("Action")) pc.Action();
+		if(Input.GetButtonDown("AltAction")) pc.AltAction();
+		if(Input.GetButtonDown("Cancel")) pc.Cancel();
+		if(Input.GetButtonDown("Start")) pc.Start();
 		
 		// Button up
-		if(Input.GetButtonUp("Action")) this.pc.ActionRelease();
-		if(Input.GetButtonUp("AltAction")) this.pc.AltActionRelease();
-		if(Input.GetButtonUp("Cancel")) this.pc.CancelRelease();
-		if(Input.GetButtonUp("Start")) this.pc.StartRelease();
+		if(Input.GetButtonUp("Action")) pc.ActionRelease();
+		if(Input.GetButtonUp("AltAction")) pc.AltActionRelease();
+		if(Input.GetButtonUp("Cancel")) pc.CancelRelease();
+		if(Input.GetButtonUp("Start")) pc.StartRelease();
 
 		// Axes
-		if(Input.GetAxis("Horizontal") != 0) this.pc.Horizontal();
-		if(Input.GetAxis("Vertical") != 0) this.pc.Vertical();
+		if(Input.GetAxis("Horizontal") != 0) pc.Horizontal();
+		if(Input.GetAxis("Vertical") != 0) pc.Vertical();
 		if(Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
-			this.pc.Idle();
+			pc.Idle();
 	}
 
 	public void SetController(PlayerController pc){ this.pc = pc; }
-	public void SetInteractable(Interactable obj){ this.interactable = obj; }
+	public void SetInteractable(Interactable obj){ interactable = obj; }
 
 	public void SetInteractColliderPos(Vector2 pos){ 
-		this.interactCollider.offset = pos; 
+		interactCollider.offset = pos; 
 	}
 	public void SetInteractColliderPos(Direction d){
 		switch(d){
 		case Direction.N:
-			SetInteractColliderPos(new Vector2(0, INTERACTABLE_COLLIDER_OFFSET_Y));
+			SetInteractColliderPos(new Vector2(0, INTERACT_COLLIDER_OFFSET_Y));
 			break;
 		case Direction.S:
-			SetInteractColliderPos(new Vector2(0, -INTERACTABLE_COLLIDER_OFFSET_Y));
+			SetInteractColliderPos(new Vector2(0, -INTERACT_COLLIDER_OFFSET_Y));
 			break;
 		case Direction.E:
-			SetInteractColliderPos(new Vector2(INTERACTABLE_COLLIDER_OFFSET_X, 0));
+			SetInteractColliderPos(new Vector2(INTERACT_COLLIDER_OFFSET_X, 0));
 			break;
 		case Direction.W:
-			SetInteractColliderPos(new Vector2(-INTERACTABLE_COLLIDER_OFFSET_X, 0));
+			SetInteractColliderPos(new Vector2(-INTERACT_COLLIDER_OFFSET_X, 0));
 			break;
 		default:
 			Debug.Log("Invalid direction.");
@@ -93,5 +111,15 @@ public class Player : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other){
 		Debug.Log("[MSG]: " + this + " collided with " + other.gameObject);
+		if(other.gameObject.tag.Equals("OverworldEnemy")){
+			OverworldEnemy enemy = other.gameObject
+					.GetComponent<OverworldEnemy>();
+
+			// Should transition scene here or in battle script?
+			// TODO: Create a scene manager to transition scenes
+			// sceneManager.transition(SceneManager.BATTLE_SCENE)
+			Debug.Log("[MSG]: Touched an enemy! Starting battle...");
+			bm.StartBattle(this, party, enemy.enemyParty);
+		}
 	}
 }
