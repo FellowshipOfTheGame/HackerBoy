@@ -9,8 +9,8 @@ public class TextController : PlayerController {
 	}
 
 	// Axes
-	public override void Horizontal(){}
-	public override void Vertical(){}
+	public override void Horizontal(float axisValue){}
+	public override void Vertical(float axisValue){}
 	public override void Idle(){}
 	
 	// Buttons

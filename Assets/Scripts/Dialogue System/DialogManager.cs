@@ -43,6 +43,15 @@ public class DialogManager : MonoBehaviour {
 		
 		// FIXME: need to see how to stop a single coroutine
 		// Workaround
+		/* NOTE: solution!
+		Coroutine co;
+		if(sentenceFinished){
+			if(autoAdvance) {
+				co = StartCoroutine(AutoAdvance());
+			} else {
+				StopCoroutine(co);
+			}
+		}*/
 		if(sentenceFinished){
 			if(autoAdvance) StartCoroutine(AutoAdvance());
 			else StopAllCoroutines(); // StopCoroutine(AutoAdvance());

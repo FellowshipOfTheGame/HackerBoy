@@ -2,8 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-// FIXME: How to model battle??
-public /*static*/ class BattleManager : MonoBehaviour {
+public class BattleManager : MonoBehaviour {
 
 	/*DEBUG*/
 	public bool testBattle;
@@ -19,20 +18,20 @@ public /*static*/ class BattleManager : MonoBehaviour {
 		NULL
 	}
 
-	public BattleState currentState 	{ get; private set; }
-	public BattleBoxManager battleBox 	{ get; private set; }
+	public BattleState currentState { get; private set; }
 	
 	private Player p;
 	private Vector2 playerOldPos;
 	private CharacterBase[] playerParty;
 	private EnemyBase[] enemies;
+	private MenuManager mm;
 
 	void Awake(){
 		DontDestroyOnLoad(transform.gameObject);
 	}
 
 	void Start(){
-		this.battleBox = gameObject.GetComponent<BattleBoxManager>();
+		mm = GameObject.Find("MenuManager").GetComponent<MenuManager>();
 		currentState = BattleState.NULL;
 
 		if(testBattle) {
@@ -45,7 +44,9 @@ public /*static*/ class BattleManager : MonoBehaviour {
 
 		// Battle State Machine
 		switch(currentState){
-		case BattleState.START:
+		// NOTE: is this state actually necessary? there is already a 
+		// StartBattle function which is called before any of these states
+		case BattleState.START: 
 			if(this.battlePhase) 
 				this.battlePhase.text = "START";
 			break;
@@ -84,15 +85,14 @@ public /*static*/ class BattleManager : MonoBehaviour {
 	// How to know which enemies to spawn in each area?
 	public void StartBattle(Player player, CharacterBase[] playerParty, EnemyBase[] enemies){
 		
+		// TODO make this AsyncLoad [1]
 		SceneManager.LoadScene("Assets/Scenes/Battle.unity");
 
-		Debug.Log("Starting battle");
 		this.playerParty = playerParty;
 		this.enemies = enemies;
 		this.p = player;
 
-		Debug.Log("Assigning player new controller");
-		this.p.pc = new BattleController(this);
+		this.p.pc = new MenuController(mm);
 		// NOTE: cant deactivate player cause the controller script needs to run
 		playerOldPos = p.transform.position;
 		this.p.transform.position = new Vector2(10000f, 10000f);
@@ -102,7 +102,10 @@ public /*static*/ class BattleManager : MonoBehaviour {
 		currentState = BattleState.PLAYER_CHOICE; /*DEBUG*/
 
 		// TODO: make a smooth scene transition
-		// StartCoroutine(LoadBattleScene()); // FIXME: do we need async load?
+		// StartCoroutine(LoadBattleScene()); // FIXME: do we need async load? see [1]
+
+		// Create battle menu
+		BattleMenu();
 	}
 
 	public void EndBattle(){
@@ -124,4 +127,42 @@ public /*static*/ class BattleManager : MonoBehaviour {
     }
 
 	public void Run(){}
+
+	public void BattleMenu(){
+
+		/* Options list
+			Attack
+			Skills
+			Items
+			Run
+		*/
+		// Create options for the menu
+		int n = 4;
+
+		string[] names = { "Attack", "Skills", "Items", "Run" };
+		GameObject[] objects = new GameObject[n];
+		SubMenuEntry[] options = new SubMenuEntry[n];
+
+		for(int i = 0; i < n; i++){
+			// Create new entry for menu
+			objects[i] = new GameObject(names[i]);
+			options[i] = objects[i].AddComponent<SubMenuEntry>();
+
+			// Add entry text to show
+			var t = objects[i].AddComponent<UnityEngine.UI.Text>();
+			t.text = names[i];
+			t.font = mm.font;
+			t.fontSize = 20;
+		}
+
+		mm.OpenMenu(new OptionsMenu(
+			constraint: UnityEngine.UI.GridLayoutGroup.Constraint.FixedRowCount,
+			font: mm.font,
+			cursor: mm.CreateCursor(),
+			options: options,
+			menuImage: mm.menuImage,
+			name: "BattleMenu",
+			rows: 2, cols: 2)
+		);
+	}
 }

@@ -46,9 +46,10 @@ public class Player : MonoBehaviour {
 		this.interactCollider.offset = new Vector2(0, -1);
 		DontDestroyOnLoad(this.gameObject);
 
-		StartDebugMenu();
+		// StartDebugMenu();
 	}
 
+	// DEBUG
 	private void StartDebugMenu(){
 		pc = new MenuController(GameObject.Find("MenuManager")
 									.GetComponent<MenuManager>());
@@ -74,9 +75,11 @@ public class Player : MonoBehaviour {
 		if(Input.GetButtonUp("Start")) pc.StartRelease();
 
 		// Axes
-		if(Input.GetAxis("Horizontal") != 0) pc.Horizontal();
-		if(Input.GetAxis("Vertical") != 0) pc.Vertical();
-		if(Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+		float hAxis = Input.GetAxisRaw("Horizontal");
+		float vAxis = Input.GetAxisRaw("Vertical");
+		pc.Horizontal(hAxis);
+		pc.Vertical(vAxis);
+		if(hAxis == 0 && vAxis == 0) 
 			pc.Idle();
 	}
 

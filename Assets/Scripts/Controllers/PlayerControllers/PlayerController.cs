@@ -1,7 +1,7 @@
 ﻿public abstract class PlayerController {
 
-	public abstract void Horizontal();
-	public abstract void Vertical();
+	public abstract void Horizontal(float axisValue);
+	public abstract void Vertical(float axisValue);
 	public abstract void Idle();
 	public abstract void Action();
 	public abstract void ActionRelease();

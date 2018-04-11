@@ -4,4 +4,19 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Prototype.unity
+    guid: 0362b26c0f0624e48a5ed8a755e3c2d7
+  - enabled: 1
+    path: Assets/Scenes/Battle.unity
+    guid: b1c16e4bf2d784b63bbc9c0ead70b2f5
+  - enabled: 1
+    path: Assets/Scenes/Object Interaction.unity
+    guid: 43a76c7dda3684e4db3f543b241dde49
+  - enabled: 1
+    path: Assets/Scenes/Overworld.unity
+    guid: ba70047d772b643369cae3871dc5b2b5
+  - enabled: 1
+    path: Assets/Scenes/Shopkeeper.unity
+    guid: c866fd7e560f74919bb4cb5159743d95

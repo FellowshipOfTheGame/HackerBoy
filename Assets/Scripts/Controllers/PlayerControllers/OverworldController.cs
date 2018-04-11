@@ -16,12 +16,12 @@ public class OverworldController : PlayerController {
 	public OverworldController(Player p){
 		this.player = p;
 		this.rb = p.GetComponent<Rigidbody2D>();
-		this.pauseMenu = GameObject.Find("PauseMenu");
-		this.pauseMenu.SetActive(false);
+		// this.pauseMenu = GameObject.Find("PauseMenu");
+		// this.pauseMenu.SetActive(false);
 	}
 
-	public override void Horizontal(){
-		Vector3 moveDir = new Vector2(Input.GetAxisRaw("Horizontal"), 0).normalized;
+	public override void Horizontal(float axisValue){
+		Vector3 moveDir = new Vector2(axisValue, 0).normalized;
 		this.rb.AddForce(speed*moveDir);
 
         // TODO: let the animator handle this, probably
@@ -31,8 +31,8 @@ public class OverworldController : PlayerController {
 
 	}
 
-	public override void Vertical(){
-		Vector3 moveDir = new Vector2(0, Input.GetAxisRaw("Vertical")).normalized;
+	public override void Vertical(float axisValue){
+		Vector3 moveDir = new Vector2(0, axisValue).normalized;
 		this.rb.AddForce(speed*moveDir);
 
         // TODO: let the animator handle this, probably

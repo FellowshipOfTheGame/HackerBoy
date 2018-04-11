@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 
 public class MenuController : PlayerController {
@@ -14,33 +15,18 @@ public class MenuController : PlayerController {
 	}
 
 	// Axes
-	public override void Horizontal(){
-
-		// if(Input.GetAxis("Horizontal") > 0){
-		// 	Debug.Log("Input: \"Horizontal axis: \"" + Input.GetAxis("Horizontal"));
-		// 	mm.battleBox.MoveCursorHorizontal(BattleBoxManager.RIGHT);
-		// 	hAxisPressed = true;
-
-		// } else if(Input.GetAxis("Horizontal") < 0){
-		// 	Debug.Log("Input: \"Horizontal axis: \"" + Input.GetAxis("Horizontal"));
-		// 	mm.battleBox.MoveCursorHorizontal(BattleBoxManager.LEFT);
-		// 	hAxisPressed = true;
-		// }
+	public override void Horizontal(float axisValue){
+		try {
+			this.mm.GetCurrentMenu().MoveCursorHorizontal(axisValue);
+		} catch(NullReferenceException){ Debug.Log("Theres no open menu"); }
+		catch(InvalidOperationException){ Debug.Log("Theres no open menu"); }
 	}
 
-	public override void Vertical(){
-
-		// if(Input.GetAxis("Vertical") > 0){
-		// 	Debug.Log("Input: \"Vertical axis: \"" + Input.GetAxis("Vertical"));
-		// 	mm.battleBox.MoveCursorVertical(BattleBoxManager.UP);
-		// 	vAxisPressed = true;
-
-		// } else if(Input.GetAxis("Vertical") < 0){
-		// 	Debug.Log("Input: \"Vertical axis: \"" + Input.GetAxis("Vertical"));
-		// 	mm.battleBox.MoveCursorVertical(BattleBoxManager.DOWN);
-		// 	vAxisPressed = true;
-
-		// }
+	public override void Vertical(float axisValue){
+		try {
+			this.mm.GetCurrentMenu().MoveCursorVertical(axisValue);
+		} catch(NullReferenceException){ /*Debug.Log("Theres no open menu");*/ }
+		catch(InvalidOperationException){ /*Debug.Log("Theres no open menu");*/ }
 	}
 
 	public override void Idle(){
@@ -50,7 +36,12 @@ public class MenuController : PlayerController {
 
 	// Buttons
 	public override void Action(){
-		mm.DebugMenu();
+		try {
+			Menu menu = mm.GetCurrentMenu();
+			menu.Action();
+		} catch(InvalidOperationException){ // No menu is open, stack is empty
+			mm.DebugMenu();
+		}
 	}
 	public override void ActionRelease(){}
 	
@@ -58,7 +49,10 @@ public class MenuController : PlayerController {
 	public override void AltActionRelease(){}
 
 	public override void Cancel(){
-		mm.CloseMenu();
+		try {
+			mm.CloseMenu();
+		} catch(NullReferenceException){} // No menu open
+		catch(InvalidOperationException){} // No menu open
 	}
 	public override void CancelRelease(){}
 

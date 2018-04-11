@@ -14,7 +14,6 @@ public class ScreenFader : MonoBehaviour {
     public float minAlpha = 0.05f;
     public float maxAlpha = 0.90f;
 
-    private bool _isFading = false;
     public bool isFading { get; private set; }
 
     void Awake() {
@@ -63,7 +62,7 @@ public class ScreenFader : MonoBehaviour {
         
         // Make sure the image is enabled
         fadeImg.enabled = true;
-        _isFading = true;
+        isFading = true;
 
         do {
             // Start fading in
@@ -74,7 +73,7 @@ public class ScreenFader : MonoBehaviour {
 
                 Debug.Log("[DEBUG]: Fadein ended");
                 fadeImg.color = Color.black;
-                _isFading = false;
+                isFading = false;
                 yield break;
 
             } else yield return null;
@@ -95,7 +94,7 @@ public class ScreenFader : MonoBehaviour {
             if (fadeImg.color.a <= minAlpha) {
 
                 Debug.Log("[DEBUG]: Fadeout ended");
-                _isFading = false;
+                isFading = false;
                 fadeImg.color = Color.clear;
                 fadeImg.enabled = false;
                 yield break;
