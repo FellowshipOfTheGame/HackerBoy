@@ -74,9 +74,6 @@ public class OptionsMenu : Menu {
 			options[i].transform.localScale = new Vector3(1f, 1f, 1f);
 		}
 
-		// Force layout rebuild to correctly position the cursor
- 		LayoutRebuilder.ForceRebuildLayoutImmediate(this.rectTransform); 
-
 		// Resize menu box to fit contents
 		Vector2 dim = CalculateGridDimensions(grid);
 		x = this.rectTransform.rect.x;
@@ -86,10 +83,17 @@ public class OptionsMenu : Menu {
 		// Reposition menu using its size
 		this.menu.transform.localPosition = 
 			new Vector3(0f, -Screen.height/2 + dim.y, 0f);
+		
+		/* NOTE: does not seem to be working */
+		// Force layout rebuild to correctly position the cursor
+ 		// LayoutRebuilder.ForceRebuildLayoutImmediate(this.rectTransform); 
 
 		// Move cursor to first option
 		optionTransform = options[0].gameObject.GetComponent<RectTransform>();
-		PositionCursor(0);
+		// PositionCursor(0);
+		
+		/* Workaround */
+		options[0].StartCoroutine(PositionCursorAfterLayoutUpdate());
 	}
 
 	public override void CloseMenu(){
@@ -113,8 +117,8 @@ public class OptionsMenu : Menu {
 		hAxisPressed = false;
 	}
 
-	public override void Action(){
-		options[cursorPos].Action();
+	public override void Action(MenuController mc){
+		options[cursorPos].Action(mc);
 	}
 
 	// If direction > 0 move right, else move left
@@ -215,16 +219,15 @@ public class OptionsMenu : Menu {
 	}
 
 	private void PositionCursor(int index){
-		Debug.Log("Moving cursor to index " + index);
 		var op = options[index];
 
 		// Move cursor to center of option and subtract half width + extra
 		float y = op.transform.position.y;
 		float x = op.transform.position.x - 
-					optionTransform.rect.width/2 - 
-					cursorTransform.rect.width/2;
+					optionTransform.rect.width/2f - 
+					cursorTransform.rect.width/2f;
 
-		cursorTransform.position = new Vector2(x, y);
+		cursorTransform.position = new Vector3(x, y, 0f);
 	}
 
 	private Vector2 CalculateGridDimensions(GridLayoutGroup grid){
@@ -241,4 +244,10 @@ public class OptionsMenu : Menu {
 
 		return new Vector2(width, height);
 	}
+
+	private IEnumerator PositionCursorAfterLayoutUpdate(){
+		yield return new WaitForEndOfFrame();
+		PositionCursor(0);
+	}
 }
+

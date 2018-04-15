@@ -72,7 +72,7 @@ public abstract class Menu {
 
 	public abstract void CloseMenu();
 	public abstract void Idle();
-	public abstract void Action();
+	public abstract void Action(MenuController mc);
 	public abstract void MoveCursorHorizontal(float direction);
 	public abstract void MoveCursorVertical(float direction);
 }

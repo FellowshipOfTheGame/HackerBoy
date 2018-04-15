@@ -39,7 +39,7 @@ public class ScrollMenu : Menu {
 		hAxisPressed = false;
 	}
 	
-	public override void Action(){}
+	public override void Action(MenuController mc){}
 	
 	public override void MoveCursorHorizontal(float direction){
 

@@ -7,7 +7,7 @@ using System;
 */
 public class SubMenuEntry : MenuEntry {
 
-	public override void Action(){
+	public override void Action(MenuController mc){
 
 	}
 }

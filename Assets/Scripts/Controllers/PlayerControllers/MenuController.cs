@@ -4,11 +4,13 @@ using System.Collections;
 
 public class MenuController : PlayerController {
 
+	public bool blockInput = false;
+
 	// Used so each button press will move the cursor only once
 	private bool hAxisPressed = false;
 	private bool vAxisPressed = false;
 
-	private MenuManager mm;
+	public MenuManager mm { get; private set; }
 
 	public MenuController(MenuManager mm){
 		this.mm = mm;
@@ -16,6 +18,9 @@ public class MenuController : PlayerController {
 
 	// Axes
 	public override void Horizontal(float axisValue){
+
+		if(blockInput) return;
+
 		try {
 			this.mm.GetCurrentMenu().MoveCursorHorizontal(axisValue);
 		} catch(NullReferenceException){ Debug.Log("Theres no open menu"); }
@@ -23,6 +28,9 @@ public class MenuController : PlayerController {
 	}
 
 	public override void Vertical(float axisValue){
+		
+		if(blockInput) return;
+
 		try {
 			this.mm.GetCurrentMenu().MoveCursorVertical(axisValue);
 		} catch(NullReferenceException){ /*Debug.Log("Theres no open menu");*/ }
@@ -36,9 +44,12 @@ public class MenuController : PlayerController {
 
 	// Buttons
 	public override void Action(){
+		
+		if(blockInput) return;
+
 		try {
 			Menu menu = mm.GetCurrentMenu();
-			menu.Action();
+			menu.Action(this);
 		} catch(InvalidOperationException){ // No menu is open, stack is empty
 			mm.DebugMenu();
 		}
@@ -49,6 +60,9 @@ public class MenuController : PlayerController {
 	public override void AltActionRelease(){}
 
 	public override void Cancel(){
+
+		if(blockInput) return;
+
 		try {
 			mm.CloseMenu();
 		} catch(NullReferenceException){} // No menu open

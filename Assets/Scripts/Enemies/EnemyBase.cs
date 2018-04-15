@@ -4,11 +4,7 @@ using System.Collections.Generic;
 
 public abstract class EnemyBase : CharacterBase {
 
-	public EnemyBase() : base() {}
-	public EnemyBase(string name) : base(name) {}
-	public EnemyBase(string name, int level) : base(name, level) {}
+	public enum Actions { Attack, Skill }
 
-	private void ChooseAction(){
-
-	}
+	protected abstract void ChooseAction();
 }

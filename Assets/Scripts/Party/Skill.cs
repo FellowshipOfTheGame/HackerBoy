@@ -1,10 +1,17 @@
 using UnityEngine;
 using System.Collections;
 
-// public class Skill : ScriptableObject {
-public abstract class Skill {
+public abstract class Skill : ScriptableObject {
 
-	private SkillScriptable skill;
+	public string skillName;
+	public string skillDescription;
+	public bool usableInBattle = true;
+	public bool usableInOverworld = true;
+	public int power;
+	public float accuracy;
+	public float effectChance;
+	public StatusEffect effect;
+	public SkillColor color;
 
 	public abstract void BattleUse();
 	public abstract void OverworldUse();

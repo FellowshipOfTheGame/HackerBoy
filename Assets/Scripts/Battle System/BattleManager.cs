@@ -19,11 +19,11 @@ public class BattleManager : MonoBehaviour {
 	}
 
 	public BattleState currentState { get; private set; }
-	
+	public EnemyBase[] enemies { get; private set; }
+
 	private Player p;
 	private Vector2 playerOldPos;
 	private CharacterBase[] playerParty;
-	private EnemyBase[] enemies;
 	private MenuManager mm;
 
 	void Awake(){
