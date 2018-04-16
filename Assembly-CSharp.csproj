@@ -55,7 +55,6 @@
      <Compile Include="Assets\Scripts\Battle System\BattleManager.cs" />
      <Compile Include="Assets\Scripts\Battle System\RandomEncounter.cs" />
      <Compile Include="Assets\Scripts\Controllers\CameraController.cs" />
-     <Compile Include="Assets\Scripts\Controllers\PlayerControllers\BattleController.cs" />
      <Compile Include="Assets\Scripts\Controllers\PlayerControllers\MenuController.cs" />
      <Compile Include="Assets\Scripts\Controllers\PlayerControllers\OverworldController.cs" />
      <Compile Include="Assets\Scripts\Controllers\PlayerControllers\PlayerController.cs" />
@@ -83,10 +82,10 @@
      <Compile Include="Assets\Scripts\Menu System\ScrollMenu.cs" />
      <Compile Include="Assets\Scripts\Menu System\SubMenuEntry.cs" />
      <Compile Include="Assets\Scripts\NPC.cs" />
+     <Compile Include="Assets\Scripts\Pair.cs" />
      <Compile Include="Assets\Scripts\Party\CharacterBase.cs" />
      <Compile Include="Assets\Scripts\Party\HpMpBarManager.cs" />
      <Compile Include="Assets\Scripts\Party\Skill.cs" />
-     <Compile Include="Assets\Scripts\Party\SkillScriptable.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\SaveManager.cs" />
      <Compile Include="Assets\Scripts\ScreenFader.cs" />

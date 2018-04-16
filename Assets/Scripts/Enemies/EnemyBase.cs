@@ -7,4 +7,7 @@ public abstract class EnemyBase : CharacterBase {
 	public enum Actions { Attack, Skill }
 
 	protected abstract void ChooseAction();
+	protected override void Die(){
+		
+	}
 }

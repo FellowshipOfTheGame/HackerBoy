@@ -14,10 +14,12 @@ public class HpMpBarManager : MonoBehaviour {
 	}
 
 	public void UpdateHp(){
-		hpbar.transform.localScale = new Vector2(chr.currentHp/chr.stats.hp, 1);
+		hpbar.transform.localScale = 
+			new Vector2(chr.currentHp/chr.calculatedStats.hp, 1);
 	}
 
 	public void UpdateMp(){
-		mpbar.transform.localScale = new Vector2(chr.currentMp/chr.stats.mp, 1);
+		mpbar.transform.localScale = 
+			new Vector2(chr.currentMp/chr.calculatedStats.mp, 1);
 	}
 }

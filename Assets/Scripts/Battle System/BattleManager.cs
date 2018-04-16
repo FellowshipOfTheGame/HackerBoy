@@ -1,8 +1,11 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 
 public class BattleManager : MonoBehaviour {
+
+	public delegate void BattleAction(CharacterBase target);
 
 	/*DEBUG*/
 	public bool testBattle;
@@ -24,6 +27,7 @@ public class BattleManager : MonoBehaviour {
 	private Player p;
 	private Vector2 playerOldPos;
 	private CharacterBase[] playerParty;
+	private List<Pair<BattleAction, CharacterBase>> turnActions;
 	private MenuManager mm;
 
 	void Awake(){
@@ -33,6 +37,7 @@ public class BattleManager : MonoBehaviour {
 	void Start(){
 		mm = GameObject.Find("MenuManager").GetComponent<MenuManager>();
 		currentState = BattleState.NULL;
+		turnActions = new List<Pair<BattleAction, CharacterBase>>();
 
 		if(testBattle) {
 			Debug.Log("Battle test setup");
@@ -126,7 +131,13 @@ public class BattleManager : MonoBehaviour {
         	yield return null;
     }
 
-	public void Run(){}
+	public void Run(CharacterBase cb){
+
+	}
+
+	public void PushAction(BattleAction act, CharacterBase param){
+		turnActions.Add(new Pair<BattleAction, CharacterBase>(act, param));
+	}
 
 	public void BattleMenu(){
 
@@ -135,15 +146,15 @@ public class BattleManager : MonoBehaviour {
 			Skills
 			Items
 			Run
+			Defend ???
 		*/
+
 		// Create options for the menu
-		int n = 4;
-
 		string[] names = { "Attack", "Skills", "Items", "Run" };
-		GameObject[] objects = new GameObject[n];
-		SubMenuEntry[] options = new SubMenuEntry[n];
+		GameObject[] objects = new GameObject[names.Length];
+		MenuEntry[] options = new MenuEntry[names.Length];
 
-		for(int i = 0; i < n; i++){
+		for(int i = 0; i < names.Length; i++){
 			// Create new entry for menu
 			objects[i] = new GameObject(names[i]);
 			options[i] = objects[i].AddComponent<SubMenuEntry>();
@@ -164,5 +175,13 @@ public class BattleManager : MonoBehaviour {
 			name: "BattleMenu",
 			rows: 2, cols: 2)
 		);
+	}
+
+	public static void OnCharacterDeath(){
+
+	}
+	
+	public static void OnEnemyDeath(){
+
 	}
 }

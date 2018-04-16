@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+public enum SkillColor { Red, Blue, Green, Yellow }
+
+[CreateAssetMenu(fileName="Skill", menuName="Scriptable/Skill", order=1)]
 public abstract class Skill : ScriptableObject {
 
 	public string skillName;

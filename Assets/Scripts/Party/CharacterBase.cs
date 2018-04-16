@@ -53,7 +53,8 @@ public class CharacterBase : MonoBehaviour {
 	// Stats
 	public int currentHp;
 	public int currentMp;
-	public Stats stats;
+	public Stats baseStats;
+	public Stats calculatedStats;
 	public StatsGrowth growths;
 	public StatusEffect status;
 
@@ -81,25 +82,44 @@ public class CharacterBase : MonoBehaviour {
 	public List<SkillColor> lastSkills; //NOTE: reset every battle
 
 	void Start(){
-		bars = GameObject.GetComponentInChildren<HpMpBarManager>();
+		bars = GetComponentInChildren<HpMpBarManager>();
 	}
 
 	public void IncrementHp(int value){
-		// this.
-		if(!bars) bars.UpdateHp();
+		currentHp += value;
+		if(currentHp <= 0) {
+			currentHp = 0;
+			if(!bars) bars.UpdateHp();
+			Die();
+		} else if(!bars) bars.UpdateHp();
 	}
 
 	public void IncrementMp(int value){
-
-		if(!bars) bars.UpdateMp();
+		currentMp += value;
+		if(currentMp <= 0) {
+			currentMp = 0;
+			if(!bars) bars.UpdateMp();
+		} 
 	}
 
 	public void IncrementExp(int value){
+		
 		exp += value;
+		
+		if(exp <= 0){
+			exp = 0;
+			return;
+		}
+
 		if(exp >= expToNextLevel){
 			exp -= expToNextLevel;
 			LevelUp();
 		}
+	}
+
+	protected virtual void Die(){
+		status = StatusEffect.Dead;
+		BattleManager.OnCharacterDeath();
 	}
 
 	// Level only one level
@@ -111,14 +131,14 @@ public class CharacterBase : MonoBehaviour {
 		// Update next level exp
 		expToNextLevel *= 2; // TODO: probably need rebalance this
 
-		stats.hp += Mathf.RoundToInt(Random.Range(0f, growths.hp));
-		stats.mp += Mathf.RoundToInt(Random.Range(0f, growths.mp));
-		stats.str += Mathf.RoundToInt(Random.Range(0f, growths.str));
-		stats.dex += Mathf.RoundToInt(Random.Range(0f, growths.dex));
-		stats.agi += Mathf.RoundToInt(Random.Range(0f, growths.agi));
-		stats.intt += Mathf.RoundToInt(Random.Range(0f, growths.intt));
-		stats.wis += Mathf.RoundToInt(Random.Range(0f, growths.wis));
-		stats.luk += Mathf.RoundToInt(Random.Range(0f, growths.luk));
+		calculatedStats.hp += Mathf.RoundToInt(Random.Range(0f, growths.hp));
+		calculatedStats.mp += Mathf.RoundToInt(Random.Range(0f, growths.mp));
+		calculatedStats.str += Mathf.RoundToInt(Random.Range(0f, growths.str));
+		calculatedStats.dex += Mathf.RoundToInt(Random.Range(0f, growths.dex));
+		calculatedStats.agi += Mathf.RoundToInt(Random.Range(0f, growths.agi));
+		calculatedStats.intt += Mathf.RoundToInt(Random.Range(0f, growths.intt));
+		calculatedStats.wis += Mathf.RoundToInt(Random.Range(0f, growths.wis));
+		calculatedStats.luk += Mathf.RoundToInt(Random.Range(0f, growths.luk));
 	}
 
 	// Level up to targetLevel

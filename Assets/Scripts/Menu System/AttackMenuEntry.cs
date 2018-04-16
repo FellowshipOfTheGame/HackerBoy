@@ -30,6 +30,15 @@ public class AttackMenuEntry : MenuEntry {
 				Input.GetAxis("Vertical") > 0) {
 				PositionCursor((--selectedEnemy)%bm.enemies.Length);
 			}
+
+			if(Input.GetButtonDown("Action")){
+				bm.PushAction(, selectedEnemy);
+
+			} else if(Input.GetButtonDown("Cancel")){
+				GameObject.Destroy(cursor);
+				cursorTransform = null;
+				mc.blockInput = false;
+			}
 		}
 	}
 
