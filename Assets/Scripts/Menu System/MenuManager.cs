@@ -36,19 +36,25 @@ public class MenuManager : MonoBehaviour {
 	void Update(){}
 
 	public void OpenMenu(Menu menu){ menuStack.Push(menu); }
-	public Menu GetCurrentMenu(){ return menuStack.Peek(); }
+	public Menu GetCurrentMenu(){ 
+		try {
+			return menuStack.Peek();
+		} catch(System.Exception){
+			return null;
+		}
+	}
 
 	// Closes current active menu
 	public void CloseMenu(){ 
 		RemoveMenuFadeLayer();
-		menuStack.Pop().CloseMenu(); 
+		if(menuStack.Count > 0) 
+			menuStack.Pop().CloseMenu(); 
 	}
 
 	// Clears menu stack
 	public void CloseAllMenus(){
-		Menu menu;
-		while((menu = menuStack.Pop()) != null)
-			menu.CloseMenu();
+		while(menuStack.Count > 0)
+			menuStack.Pop().CloseMenu();
 	}
 
 	public void AddMenuFadeLayer(){
@@ -64,7 +70,9 @@ public class MenuManager : MonoBehaviour {
 		fade.Push(img);
 	}
 
-	public void RemoveMenuFadeLayer(){ Destroy(fade.Pop()); }
+	public void RemoveMenuFadeLayer(){ 
+		if(fade.Count > 0) Destroy(fade.Pop());
+	}
 
 	public GameObject CreateCursor(){
 		return GameObject.Instantiate(cursorPrefab, canvas);

@@ -13,12 +13,14 @@ public abstract class Menu {
 	protected readonly float Y_STEP = 40f;
 	
 	/* Attributes */
+	public bool isActive { get; private set; }
 	public Sprite menuImage;
 	protected Font font;
 
 	/* Menu object att */
 	protected GameObject menu;
 	protected RectTransform rectTransform;
+	public RectTransform rect { get { return this.rectTransform; } }
 
 	/* Cursor object att */
 	protected GameObject cursor;
@@ -46,6 +48,7 @@ public abstract class Menu {
 				Font font){
 		
 		// Create a gameobject to hold all menu parts
+		this.isActive = true;
 		this.menu = new GameObject(name);
 		this.menu.transform.SetParent(MenuManager.canvas);
 
@@ -56,7 +59,7 @@ public abstract class Menu {
 
 		// NOTE: important to do this AFTER adding an image component!
 		// Position and scale menu
-		this.menu.transform.localScale = new Vector3 (1f, 1f, 1f);
+		this.menu.transform.localScale = new Vector3(1f, 1f, 1f);
 		// this.menu.transform.position = new Vector3 (Screen.width/2, 1f, 1f);
 		this.rectTransform = this.menu.GetComponent<RectTransform>();
 		this.rectTransform.sizeDelta = new Vector2(width, height);
@@ -68,6 +71,14 @@ public abstract class Menu {
 		this.cursor = cursor;
 		this.cursorTransform = cursor.GetComponent<RectTransform>();
 		this.cursorPos = 0;
+	}
+
+	public Vector2 GetDimensions(){ return this.rectTransform.sizeDelta; }
+	public void SetActive(bool active){
+		isActive = active;
+		menu.SetActive(active);
+		cursor.SetActive(active);
+		Debug.Log("[Debug]: Setting " + this + " to active = " + active);
 	}
 
 	public abstract void CloseMenu();

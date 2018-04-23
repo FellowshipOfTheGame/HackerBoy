@@ -97,15 +97,12 @@ public class OptionsMenu : Menu {
 	}
 
 	public override void CloseMenu(){
-		Debug.Log("Closing menu");
 		// Destroy cursor
 		UnityEngine.Object.Destroy(cursor);
 		
 		// Destroy options
-		foreach (MenuEntry mi in options){
+		foreach (MenuEntry mi in options)
 			UnityEngine.Object.Destroy(mi.gameObject);
-
-		}
 		options = null; // Destroy list
 
 		// Destroy parent object

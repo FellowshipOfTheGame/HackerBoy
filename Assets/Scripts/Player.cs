@@ -41,6 +41,9 @@ public class Player : MonoBehaviour {
 		this.bm = GameObject.Find("BattleManager").GetComponent<BattleManager>();
 		this.gm = GameObject.Find("GameManager").GetComponent<GameManager>();
 		this.mm = GameObject.Find("MenuManager").GetComponent<MenuManager>();
+		this.party = GetComponentsInChildren<CharacterBase>(true);
+		foreach (var chr in this.party) 
+			chr.gameObject.SetActive(false);
 
 		/* DEBUG NOTE: For debugging, use hard code values X = +-0.75 Y = +-1*/
 		this.interactCollider.offset = new Vector2(0, -1);
@@ -113,14 +116,20 @@ public class Player : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D other){
 		Debug.Log("[MSG]: " + this + " collided with " + other.gameObject);
 		if(other.gameObject.tag.Equals("OverworldEnemy")){
+			
 			OverworldEnemy enemy = other.gameObject
 					.GetComponent<OverworldEnemy>();
+
+			// If enemy has already been battled before just return
+			if(enemy.battled) return;
+			enemy.battled = true;
+			other.gameObject.GetComponent<SpriteRenderer>().enabled = false;
 
 			// Should transition scene here or in battle script?
 			// TODO: Create a scene manager to transition scenes
 			// sceneManager.transition(SceneManager.BATTLE_SCENE)
 			Debug.Log("[MSG]: Touched an enemy! Starting battle...");
-			bm.StartBattle(this, party, enemy.enemyParty);
+			bm.StartBattle(this, party, enemy);
 		}
 	}
 }

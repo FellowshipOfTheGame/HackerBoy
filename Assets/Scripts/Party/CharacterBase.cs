@@ -11,19 +11,21 @@ public enum StatusEffect {
 	Dead
 }
 
+[System.Serializable]
 public struct Stats {
-	public int hp, mp, str, dex, agi, intt, wis, luk;
+	public int hp, mp, str, def, agi, intt, wis, luk;
 }
 
+[System.Serializable]
 public struct StatsGrowth {
-	public float hp, mp, str, dex, agi, intt, wis, luk;
+	public float hp, mp, str, def, agi, intt, wis, luk;
 
-	public StatsGrowth(float hp, float mp, float str, float dex, 
+	public StatsGrowth(float hp, float mp, float str, float def, 
 						float agi, float intt, float wis, float luk){
 		this.hp = hp;
 		this.mp = mp;
 		this.str = str;
-		this.dex = dex;
+		this.def = def;
 		this.agi = agi;
 		this.intt = intt;
 		this.wis = wis;
@@ -31,6 +33,7 @@ public struct StatsGrowth {
 	}
 }
 
+[System.Serializable]
 public struct CharacterEquipment {
 	public Equipment head;
 	public Equipment body;
@@ -41,14 +44,15 @@ public struct CharacterEquipment {
 }
 
 
+[System.Serializable]
 public class CharacterBase : MonoBehaviour {
 
 	// Custom display values
 	public string charName;
 	public string expName;
 	public Sprite portrait;
+	protected HpMpBarManager bars;
 	private GameObject barScaler;
-	private HpMpBarManager bars;
 
 	// Stats
 	public int currentHp;
@@ -83,23 +87,33 @@ public class CharacterBase : MonoBehaviour {
 
 	void Start(){
 		bars = GetComponentInChildren<HpMpBarManager>();
+		currentHp = calculatedStats.hp;
+		currentMp = calculatedStats.mp;
 	}
 
 	public void IncrementHp(int value){
+		
 		currentHp += value;
+		
 		if(currentHp <= 0) {
 			currentHp = 0;
-			if(!bars) bars.UpdateHp();
+			bars.UpdateHp();
 			Die();
-		} else if(!bars) bars.UpdateHp();
+		
+		} else if(currentHp >= calculatedStats.hp)
+			currentHp = calculatedStats.hp;
+
+		bars.UpdateHp();
 	}
 
 	public void IncrementMp(int value){
+		
 		currentMp += value;
-		if(currentMp <= 0) {
-			currentMp = 0;
-			if(!bars) bars.UpdateMp();
-		} 
+		
+		if(currentMp <= 0) currentMp = 0;
+		else if(currentMp >= calculatedStats.mp) currentMp = calculatedStats.mp;
+
+		bars.UpdateMp();
 	}
 
 	public void IncrementExp(int value){
@@ -117,9 +131,19 @@ public class CharacterBase : MonoBehaviour {
 		}
 	}
 
+	public void Attack(CharacterBase target){
+		
+		int damage = this.calculatedStats.str - target.calculatedStats.def;
+		if(damage < 0) damage = 0;
+
+		target.IncrementHp(-damage);
+	}
+
 	protected virtual void Die(){
 		status = StatusEffect.Dead;
-		BattleManager.OnCharacterDeath();
+		GameObject.Find("BattleManager")
+			.GetComponent<BattleManager>()
+			.OnCharacterDeath(this);
 	}
 
 	// Level only one level
@@ -134,7 +158,7 @@ public class CharacterBase : MonoBehaviour {
 		calculatedStats.hp += Mathf.RoundToInt(Random.Range(0f, growths.hp));
 		calculatedStats.mp += Mathf.RoundToInt(Random.Range(0f, growths.mp));
 		calculatedStats.str += Mathf.RoundToInt(Random.Range(0f, growths.str));
-		calculatedStats.dex += Mathf.RoundToInt(Random.Range(0f, growths.dex));
+		calculatedStats.def += Mathf.RoundToInt(Random.Range(0f, growths.def));
 		calculatedStats.agi += Mathf.RoundToInt(Random.Range(0f, growths.agi));
 		calculatedStats.intt += Mathf.RoundToInt(Random.Range(0f, growths.intt));
 		calculatedStats.wis += Mathf.RoundToInt(Random.Range(0f, growths.wis));

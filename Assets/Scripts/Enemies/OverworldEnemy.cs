@@ -4,18 +4,19 @@ using System.Collections.Generic;
 
 public class OverworldEnemy : MonoBehaviour {
 
-	public EnemyBase[] enemyParty { get; private set; }
+	public EnemyBase[] enemyParty;
+	public bool battled;
 
 	// FIXME: Move to an enemy spawner
 	// private MapInformation mapInfo; // Need to know which enemies can appear in this map
 
 	void Start(){
+
+		DontDestroyOnLoad(gameObject);
+
 		/* DEBUG */
 		// Fixed enemies for test purposes
-		// enemyParty[0] = Enemy0;
-		// enemyParty[1] = Enemy1;
-		// enemyParty[2] = Enemy2;
-		// enemyParty[3] = Enemy3;
+		enemyParty = GetComponentsInChildren<EnemyBase>(true);
 		/* ENDDEBUG */
 	}
 
